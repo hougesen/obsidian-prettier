@@ -82,7 +82,7 @@ export default class ObsidianPrettier extends Plugin {
 
 class FormattingSettingTab
 	extends PluginSettingTab
-	implements Partial<Record<keyof PrettierSettings, (containerEl: HTMLElement) => Setting>>
+	implements Record<keyof PrettierSettings, (containerEl: HTMLElement) => Setting>
 {
 	plugin: ObsidianPrettier;
 
@@ -111,6 +111,7 @@ class FormattingSettingTab
 		this.bracketSameLine(containerEl);
 		this.arrowParens(containerEl);
 		this.htmlWhitespaceSensitivity(containerEl);
+		this.singleAttributePerLine(containerEl);
 	}
 
 	printWidth(containerEl: HTMLElement): Setting {
@@ -373,6 +374,18 @@ class FormattingSettingTab
 
 						await this.plugin.saveSettings();
 					}),
+			);
+	}
+
+	singleAttributePerLine(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('Single Attribute Per Line')
+			.setDesc('Enforce single attribute per line in HTML, Vue and JSX.')
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.singleAttributePerLine === true).onChange(async (value) => {
+					this.plugin.settings.singleAttributePerLine = value === true;
+					await this.plugin.saveSettings();
+				}),
 			);
 	}
 }
