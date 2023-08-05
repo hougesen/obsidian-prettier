@@ -102,6 +102,10 @@ class FormattingSettingTab
 
 		this.embeddedLanguageFormatting(containerEl);
 
+		this.useTabs(containerEl);
+
+		this.tabWidth(containerEl);
+
 		this.semi(containerEl);
 	}
 
@@ -111,18 +115,58 @@ class FormattingSettingTab
 			.setDesc('Specify the line length that the printer will wrap on.')
 			.addText((text) =>
 				text
-					.setPlaceholder('80')
+					.setPlaceholder(DEFAULT_SETTINGS.printWidth.toString())
 					.setValue(
 						Number.isNaN(this.plugin.settings.printWidth) ? '' : this.plugin.settings.printWidth.toString(),
 					)
 					.onChange(async (value) => {
 						const trimmedInput = value?.trim();
 
-						const printWidthInput = trimmedInput.length ? parseInt(trimmedInput, 10) : 80;
+						const printWidthInput = trimmedInput.length
+							? parseInt(trimmedInput, 10)
+							: DEFAULT_SETTINGS.printWidth;
 
 						if (Number.isNaN(printWidthInput)) return;
 
 						this.plugin.settings.printWidth = printWidthInput;
+
+						await this.plugin.saveSettings();
+					}),
+			);
+	}
+
+	useTabs(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('Prefer tabs')
+			.setDesc('Indent lines with tabs instead of spaces.')
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.useTabs === true).onChange(async (value) => {
+					this.plugin.settings.useTabs = value;
+					await this.plugin.saveSettings();
+				}),
+			);
+	}
+
+	tabWidth(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('Tab width')
+			.setDesc('Specify the number of spaces per indentation-level.')
+			.addText((input) =>
+				input
+					.setPlaceholder(DEFAULT_SETTINGS.tabWidth.toString())
+					.setValue(
+						Number.isNaN(this.plugin.settings.tabWidth) ? '' : this.plugin.settings.tabWidth.toString(),
+					)
+					.onChange(async (value) => {
+						const trimmedInput = value?.trim();
+
+						const tabWidthInput = trimmedInput.length
+							? parseInt(trimmedInput, 10)
+							: DEFAULT_SETTINGS.tabWidth;
+
+						if (Number.isNaN(tabWidthInput)) return;
+
+						this.plugin.settings.printWidth = tabWidthInput;
 
 						await this.plugin.saveSettings();
 					}),
@@ -139,7 +183,6 @@ class FormattingSettingTab
 					.setValue(this.plugin.settings.embeddedLanguageFormatting)
 					.onChange(async (value) => {
 						this.plugin.settings.embeddedLanguageFormatting = value === 'auto' ? 'auto' : 'off';
-
 						await this.plugin.saveSettings();
 					}),
 			);
@@ -150,7 +193,7 @@ class FormattingSettingTab
 			.setName('Semicolons')
 			.setDesc('Print semicolons at the ends of code statements.')
 			.addToggle((toggle) =>
-				toggle.setValue(!!this.plugin.settings.semi).onChange(async (value) => {
+				toggle.setValue(this.plugin.settings.semi === true).onChange(async (value) => {
 					this.plugin.settings.semi = value;
 					await this.plugin.saveSettings();
 				}),
