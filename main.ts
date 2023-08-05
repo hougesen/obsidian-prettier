@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownFileInfo, MarkdownView, Plugin, PluginSettingTab } from 'obsidian';
+import { App, Editor, MarkdownFileInfo, MarkdownView, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import { RequiredOptions } from 'prettier';
 import * as prettierPluginMarkdown from 'prettier/plugins/markdown';
 import * as prettier from 'prettier/standalone';
@@ -82,7 +82,10 @@ export default class ObsidianPrettier extends Plugin {
 	}
 }
 
-class FormattingSettingTab extends PluginSettingTab {
+class FormattingSettingTab
+	extends PluginSettingTab
+	implements Partial<Record<keyof PrettierSettings, (containerEl: HTMLElement) => Setting>>
+{
 	plugin: ObsidianPrettier;
 
 	constructor(app: App, plugin: ObsidianPrettier) {
@@ -94,5 +97,31 @@ class FormattingSettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 
 		containerEl.empty();
+
+		this.printWidth(containerEl);
+	}
+
+	printWidth(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('Print width')
+			.setDesc('Specify the line length that the printer will wrap on.')
+			.addText((text) =>
+				text
+					.setPlaceholder('80')
+					.setValue(
+						Number.isNaN(this.plugin.settings.printWidth) ? '' : this.plugin.settings.printWidth.toString(),
+					)
+					.onChange(async (value) => {
+						const trimmedInput = value?.trim();
+
+						const printWidthInput = trimmedInput.length ? parseInt(trimmedInput, 10) : 80;
+
+						if (Number.isNaN(printWidthInput)) return;
+
+						this.plugin.settings.printWidth = printWidthInput;
+
+						await this.plugin.saveSettings();
+					}),
+			);
 	}
 }
