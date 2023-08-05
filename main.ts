@@ -107,6 +107,7 @@ class FormattingSettingTab
 		this.trailingComma(containerEl);
 		this.bracketSpacing(containerEl);
 		this.bracketSameLine(containerEl);
+		this.arrowParens(containerEl);
 	}
 
 	printWidth(containerEl: HTMLElement): Setting {
@@ -280,5 +281,17 @@ class FormattingSettingTab
 					await this.plugin.saveSettings();
 				}),
 			);
+	}
+
+	arrowParens(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl).setName('Arrow Function Parentheses').addDropdown((dropdown) =>
+			dropdown
+				.addOptions({ always: 'always', avoid: 'avoid' })
+				.setValue(this.plugin.settings.arrowParens)
+				.onChange(async (value: PrettierSettings['arrowParens']) => {
+					this.plugin.settings.arrowParens = value;
+					await this.plugin.saveSettings();
+				}),
+		);
 	}
 }
