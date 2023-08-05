@@ -1,0 +1,10 @@
+{
+	"id": "obsidian-prettier",
+	"name": "Obsidian Prettier",
+	"version": "0.0.1",
+	"minAppVersion": "0.15.0",
+	"description": "Format files using prettier",
+	"author": "Mads Hougesen",
+	"authorUrl": "https://github.com/hougesen/obsidian-prettier",
+	"isDesktopOnly": true
+}
