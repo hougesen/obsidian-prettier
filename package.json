@@ -16,6 +16,14 @@
 	],
 	"author": "Mads Hougesen",
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/hougesen/obsidian-prettier.git"
+	},
+	"bugs": {
+		"url": "https://github.com/hougesen/obsidian-prettier/issues"
+	},
+	"homepage": "https://github.com/hougesen/obsidian-prettier#readme",
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "5.29.0",
 		"@typescript-eslint/parser": "5.29.0",
