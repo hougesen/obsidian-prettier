@@ -106,6 +106,8 @@ class FormattingSettingTab
 
 		this.tabWidth(containerEl);
 
+		this.endOfLine(containerEl);
+
 		this.semi(containerEl);
 	}
 
@@ -186,6 +188,18 @@ class FormattingSettingTab
 						await this.plugin.saveSettings();
 					}),
 			);
+	}
+
+	endOfLine(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl).setName('End of Line').addDropdown((drop) =>
+			drop
+				.addOptions({ auto: 'auto', lf: 'lf', crlf: 'crlf', cr: 'cr' })
+				.setValue(this.plugin.settings.endOfLine || 'lf')
+				.onChange(async (value: PrettierSettings['endOfLine']) => {
+					this.plugin.settings.endOfLine = value;
+					await this.plugin.saveSettings();
+				}),
+		);
 	}
 
 	semi(containerEl: HTMLElement): Setting {
