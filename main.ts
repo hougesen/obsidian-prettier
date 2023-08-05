@@ -21,6 +21,7 @@ type PrettierSettings = Pick<
 	| 'printWidth'
 	| 'tabWidth'
 	| 'useTabs'
+	| 'vueIndentScriptAndStyle'
 >;
 
 const DEFAULT_SETTINGS: PrettierSettings = {
@@ -40,6 +41,7 @@ const DEFAULT_SETTINGS: PrettierSettings = {
 	printWidth: 80,
 	tabWidth: 2,
 	useTabs: false,
+	vueIndentScriptAndStyle: false,
 };
 
 async function formatText(text: string, settings: PrettierSettings): Promise<string> {
@@ -384,6 +386,18 @@ class FormattingSettingTab
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.singleAttributePerLine === true).onChange(async (value) => {
 					this.plugin.settings.singleAttributePerLine = value === true;
+					await this.plugin.saveSettings();
+				}),
+			);
+	}
+
+	vueIndentScriptAndStyle(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('Vue files script and style tags indentation')
+			.setDesc('Whether or not to indent the code inside <script> and <style> tags in Vue files.')
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.vueIndentScriptAndStyle === true).onChange(async (value) => {
+					this.plugin.settings.vueIndentScriptAndStyle = value === true;
 					await this.plugin.saveSettings();
 				}),
 			);
