@@ -11,7 +11,6 @@ type PrettierSettings = Pick<
 	| 'trailingComma'
 	| 'bracketSpacing'
 	| 'bracketSameLine'
-	| 'jsxBracketSameLine'
 	| 'proseWrap'
 	| 'arrowParens'
 	| 'htmlWhitespaceSensitivity'
@@ -31,7 +30,6 @@ const DEFAULT_SETTINGS: PrettierSettings = {
 	trailingComma: 'all',
 	bracketSpacing: true,
 	bracketSameLine: false,
-	jsxBracketSameLine: false,
 	proseWrap: 'preserve',
 	arrowParens: 'always',
 	htmlWhitespaceSensitivity: 'css',
@@ -108,6 +106,7 @@ class FormattingSettingTab
 		this.jsxSingleQuote(containerEl);
 		this.trailingComma(containerEl);
 		this.bracketSpacing(containerEl);
+		this.bracketSameLine(containerEl);
 	}
 
 	printWidth(containerEl: HTMLElement): Setting {
@@ -264,6 +263,20 @@ class FormattingSettingTab
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.bracketSpacing === true).onChange(async (value) => {
 					this.plugin.settings.bracketSpacing = value;
+					await this.plugin.saveSettings();
+				}),
+			);
+	}
+
+	bracketSameLine(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('Bracket Line')
+			.setDesc(
+				'Put the > of a multi-line HTML (HTML, JSX, Vue, Angular) element at the end of the last line instead of being alone on the next line (does not apply to self closing elements).',
+			)
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.bracketSameLine === true).onChange(async (value) => {
+					this.plugin.settings.bracketSameLine = value;
 					await this.plugin.saveSettings();
 				}),
 			);
