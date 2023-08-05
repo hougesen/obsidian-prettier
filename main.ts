@@ -107,6 +107,7 @@ class FormattingSettingTab
 		this.singleQuote(containerEl);
 		this.jsxSingleQuote(containerEl);
 		this.trailingComma(containerEl);
+		this.bracketSpacing(containerEl);
 	}
 
 	printWidth(containerEl: HTMLElement): Setting {
@@ -253,6 +254,18 @@ class FormattingSettingTab
 						this.plugin.settings.trailingComma = value;
 						await this.plugin.saveSettings();
 					}),
+			);
+	}
+
+	bracketSpacing(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('Bracket Spacing')
+			.setDesc('Print spaces between brackets in object literals.')
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.bracketSpacing === true).onChange(async (value) => {
+					this.plugin.settings.bracketSpacing = value;
+					await this.plugin.saveSettings();
+				}),
 			);
 	}
 }
