@@ -105,6 +105,7 @@ class FormattingSettingTab
 		this.semi(containerEl);
 		this.singleQuote(containerEl);
 		this.jsxSingleQuote(containerEl);
+		this.quoteProps(containerEl);
 		this.trailingComma(containerEl);
 		this.bracketSpacing(containerEl);
 		this.bracketSameLine(containerEl);
@@ -241,6 +242,21 @@ class FormattingSettingTab
 			);
 	}
 
+	quoteProps(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('Quote Props')
+			.setDesc('')
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOptions({ 'as-needed': 'as-needed', consistent: 'consistent', preserve: 'preserve' })
+					.setValue(this.plugin.settings.quoteProps || 'as-needed')
+					.onChange(async (value: PrettierSettings['quoteProps']) => {
+						this.plugin.settings.quoteProps = value;
+						await this.plugin.saveSettings();
+					}),
+			);
+	}
+
 	trailingComma(containerEl: HTMLElement): Setting {
 		return new Setting(containerEl)
 			.setName('Trailing Commas')
@@ -250,7 +266,7 @@ class FormattingSettingTab
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({ all: 'all', es5: 'es5', none: 'none' })
-					.setValue(this.plugin.settings.trailingComma || 'lf')
+					.setValue(this.plugin.settings.trailingComma || 'all')
 					.onChange(async (value: PrettierSettings['trailingComma']) => {
 						this.plugin.settings.trailingComma = value;
 						await this.plugin.saveSettings();
