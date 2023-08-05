@@ -99,6 +99,8 @@ class FormattingSettingTab
 		containerEl.empty();
 
 		this.printWidth(containerEl);
+
+		this.semi(containerEl);
 	}
 
 	printWidth(containerEl: HTMLElement): Setting {
@@ -122,6 +124,18 @@ class FormattingSettingTab
 
 						await this.plugin.saveSettings();
 					}),
+			);
+	}
+
+	semi(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('Semicolons')
+			.setDesc('Print semicolons at the ends of code statements.')
+			.addToggle((toggle) =>
+				toggle.setValue(!!this.plugin.settings.semi).onChange(async (value) => {
+					this.plugin.settings.semi = value;
+					await this.plugin.saveSettings();
+				}),
 			);
 	}
 }
