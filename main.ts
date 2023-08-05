@@ -98,6 +98,7 @@ class FormattingSettingTab
 
 		this.printWidth(containerEl);
 		this.embeddedLanguageFormatting(containerEl);
+		this.proseWrap(containerEl);
 		this.useTabs(containerEl);
 		this.tabWidth(containerEl);
 		this.endOfLine(containerEl);
@@ -284,14 +285,34 @@ class FormattingSettingTab
 	}
 
 	arrowParens(containerEl: HTMLElement): Setting {
-		return new Setting(containerEl).setName('Arrow Function Parentheses').addDropdown((dropdown) =>
-			dropdown
-				.addOptions({ always: 'always', avoid: 'avoid' })
-				.setValue(this.plugin.settings.arrowParens)
-				.onChange(async (value: PrettierSettings['arrowParens']) => {
-					this.plugin.settings.arrowParens = value;
-					await this.plugin.saveSettings();
-				}),
-		);
+		return new Setting(containerEl)
+			.setName('Arrow Function Parentheses')
+			.setDesc('Include parentheses around a sole arrow function parameter.')
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOptions({ always: 'always', avoid: 'avoid' })
+					.setValue(this.plugin.settings.arrowParens)
+					.onChange(async (value: PrettierSettings['arrowParens']) => {
+						this.plugin.settings.arrowParens = value;
+						await this.plugin.saveSettings();
+					}),
+			);
+	}
+
+	proseWrap(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('Prose wrap')
+			.setDesc(
+				'By default, Prettier will not change wrapping in markdown text since some services use a linebreak-sensitive renderer, e.g. GitHub comments and BitBucket. To have Prettier wrap prose to the print width, change this option to "always". If you want Prettier to force all prose blocks to be on a single line and rely on editor/viewer soft wrapping instead, you can use "never".',
+			)
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOptions({ always: 'always', never: 'never', preserve: 'preserve' })
+					.setValue(this.plugin.settings.proseWrap || 'preserve')
+					.onChange(async (value: PrettierSettings['proseWrap']) => {
+						this.plugin.settings.proseWrap = value;
+						await this.plugin.saveSettings();
+					}),
+			);
 	}
 }
