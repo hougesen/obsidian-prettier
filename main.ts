@@ -100,6 +100,8 @@ class FormattingSettingTab
 
 		this.printWidth(containerEl);
 
+		this.embeddedLanguageFormatting(containerEl);
+
 		this.semi(containerEl);
 	}
 
@@ -121,6 +123,22 @@ class FormattingSettingTab
 						if (Number.isNaN(printWidthInput)) return;
 
 						this.plugin.settings.printWidth = printWidthInput;
+
+						await this.plugin.saveSettings();
+					}),
+			);
+	}
+
+	embeddedLanguageFormatting(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('Embedded Language Formatting')
+			.setDesc('Control whether Prettier formats quoted code embedded in the file.')
+			.addDropdown((drop) =>
+				drop
+					.addOptions({ auto: 'auto', off: 'off' })
+					.setValue(this.plugin.settings.embeddedLanguageFormatting)
+					.onChange(async (value) => {
+						this.plugin.settings.embeddedLanguageFormatting = value === 'auto' ? 'auto' : 'off';
 
 						await this.plugin.saveSettings();
 					}),
