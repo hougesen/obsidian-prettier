@@ -99,19 +99,14 @@ class FormattingSettingTab
 		containerEl.empty();
 
 		this.printWidth(containerEl);
-
 		this.embeddedLanguageFormatting(containerEl);
-
 		this.useTabs(containerEl);
-
 		this.tabWidth(containerEl);
-
 		this.endOfLine(containerEl);
-
 		this.semi(containerEl);
-
 		this.singleQuote(containerEl);
 		this.jsxSingleQuote(containerEl);
+		this.trailingComma(containerEl);
 	}
 
 	printWidth(containerEl: HTMLElement): Setting {
@@ -182,8 +177,8 @@ class FormattingSettingTab
 		return new Setting(containerEl)
 			.setName('Embedded Language Formatting')
 			.setDesc('Control whether Prettier formats quoted code embedded in the file.')
-			.addDropdown((drop) =>
-				drop
+			.addDropdown((dropdown) =>
+				dropdown
 					.addOptions({ auto: 'auto', off: 'off' })
 					.setValue(this.plugin.settings.embeddedLanguageFormatting)
 					.onChange(async (value) => {
@@ -194,15 +189,18 @@ class FormattingSettingTab
 	}
 
 	endOfLine(containerEl: HTMLElement): Setting {
-		return new Setting(containerEl).setName('End of Line').addDropdown((drop) =>
-			drop
-				.addOptions({ auto: 'auto', lf: 'lf', crlf: 'crlf', cr: 'cr' })
-				.setValue(this.plugin.settings.endOfLine || 'lf')
-				.onChange(async (value: PrettierSettings['endOfLine']) => {
-					this.plugin.settings.endOfLine = value;
-					await this.plugin.saveSettings();
-				}),
-		);
+		return new Setting(containerEl)
+			.setName('End of Line')
+			.setDesc('')
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOptions({ auto: 'auto', lf: 'lf', crlf: 'crlf', cr: 'cr' })
+					.setValue(this.plugin.settings.endOfLine || 'lf')
+					.onChange(async (value: PrettierSettings['endOfLine']) => {
+						this.plugin.settings.endOfLine = value;
+						await this.plugin.saveSettings();
+					}),
+			);
 	}
 
 	semi(containerEl: HTMLElement): Setting {
@@ -238,6 +236,23 @@ class FormattingSettingTab
 					this.plugin.settings.jsxSingleQuote = value;
 					await this.plugin.saveSettings();
 				}),
+			);
+	}
+
+	trailingComma(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('Trailing Commas')
+			.setDesc(
+				'Print trailing commas wherever possible in multi-line comma-separated syntactic structures. (A single-line array, for example, never gets trailing commas.)',
+			)
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOptions({ all: 'all', es5: 'es5', none: 'none' })
+					.setValue(this.plugin.settings.trailingComma || 'lf')
+					.onChange(async (value: PrettierSettings['trailingComma']) => {
+						this.plugin.settings.trailingComma = value;
+						await this.plugin.saveSettings();
+					}),
 			);
 	}
 }
