@@ -144,7 +144,7 @@ class FormattingSettingTab
 			.setDesc('Indent lines with tabs instead of spaces.')
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.useTabs === true).onChange(async (value) => {
-					this.plugin.settings.useTabs = value;
+					this.plugin.settings.useTabs = value === true;
 					await this.plugin.saveSettings();
 				}),
 			);
@@ -198,9 +198,12 @@ class FormattingSettingTab
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({ auto: 'auto', lf: 'lf', crlf: 'crlf', cr: 'cr' })
-					.setValue(this.plugin.settings.endOfLine || 'lf')
+					.setValue(this.plugin.settings.endOfLine || DEFAULT_SETTINGS.endOfLine)
 					.onChange(async (value: PrettierSettings['endOfLine']) => {
-						this.plugin.settings.endOfLine = value;
+						const options: Array<PrettierSettings['endOfLine']> = ['auto', 'lf', 'cr', 'crlf'];
+
+						this.plugin.settings.endOfLine = options.includes(value) ? value : DEFAULT_SETTINGS.endOfLine;
+
 						await this.plugin.saveSettings();
 					}),
 			);
@@ -212,7 +215,7 @@ class FormattingSettingTab
 			.setDesc('Print semicolons at the ends of code statements.')
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.semi === true).onChange(async (value) => {
-					this.plugin.settings.semi = value;
+					this.plugin.settings.semi = value === true;
 					await this.plugin.saveSettings();
 				}),
 			);
@@ -224,7 +227,7 @@ class FormattingSettingTab
 			.setDesc('Use single quotes instead of double quotes.')
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.singleQuote === true).onChange(async (value) => {
-					this.plugin.settings.singleQuote = value;
+					this.plugin.settings.singleQuote = value === true;
 					await this.plugin.saveSettings();
 				}),
 			);
@@ -236,7 +239,7 @@ class FormattingSettingTab
 			.setDesc('Use single quotes instead of double quotes in JSX.')
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.jsxSingleQuote === true).onChange(async (value) => {
-					this.plugin.settings.jsxSingleQuote = value;
+					this.plugin.settings.jsxSingleQuote = value === true;
 					await this.plugin.saveSettings();
 				}),
 			);
@@ -249,9 +252,12 @@ class FormattingSettingTab
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({ 'as-needed': 'as-needed', consistent: 'consistent', preserve: 'preserve' })
-					.setValue(this.plugin.settings.quoteProps || 'as-needed')
+					.setValue(this.plugin.settings.quoteProps || DEFAULT_SETTINGS.quoteProps)
 					.onChange(async (value: PrettierSettings['quoteProps']) => {
-						this.plugin.settings.quoteProps = value;
+						const options: Array<PrettierSettings['quoteProps']> = ['as-needed', 'consistent', 'preserve'];
+
+						this.plugin.settings.quoteProps = options.includes(value) ? value : DEFAULT_SETTINGS.quoteProps;
+
 						await this.plugin.saveSettings();
 					}),
 			);
@@ -266,9 +272,14 @@ class FormattingSettingTab
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({ all: 'all', es5: 'es5', none: 'none' })
-					.setValue(this.plugin.settings.trailingComma || 'all')
+					.setValue(this.plugin.settings.trailingComma || DEFAULT_SETTINGS.trailingComma)
 					.onChange(async (value: PrettierSettings['trailingComma']) => {
-						this.plugin.settings.trailingComma = value;
+						const options: Array<PrettierSettings['trailingComma']> = ['all', 'es5', 'none'];
+
+						this.plugin.settings.trailingComma = options.includes(value)
+							? value
+							: DEFAULT_SETTINGS.trailingComma;
+
 						await this.plugin.saveSettings();
 					}),
 			);
@@ -280,7 +291,7 @@ class FormattingSettingTab
 			.setDesc('Print spaces between brackets in object literals.')
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.bracketSpacing === true).onChange(async (value) => {
-					this.plugin.settings.bracketSpacing = value;
+					this.plugin.settings.bracketSpacing = value === true;
 					await this.plugin.saveSettings();
 				}),
 			);
@@ -294,7 +305,7 @@ class FormattingSettingTab
 			)
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.bracketSameLine === true).onChange(async (value) => {
-					this.plugin.settings.bracketSameLine = value;
+					this.plugin.settings.bracketSameLine = value === true;
 					await this.plugin.saveSettings();
 				}),
 			);
@@ -307,9 +318,14 @@ class FormattingSettingTab
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({ always: 'always', avoid: 'avoid' })
-					.setValue(this.plugin.settings.arrowParens)
+					.setValue(this.plugin.settings.arrowParens || DEFAULT_SETTINGS.arrowParens)
 					.onChange(async (value: PrettierSettings['arrowParens']) => {
-						this.plugin.settings.arrowParens = value;
+						const options: Array<PrettierSettings['arrowParens']> = ['always', 'avoid'];
+
+						this.plugin.settings.arrowParens = options.includes(value)
+							? value
+							: DEFAULT_SETTINGS.arrowParens;
+
 						await this.plugin.saveSettings();
 					}),
 			);
@@ -324,9 +340,12 @@ class FormattingSettingTab
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({ always: 'always', never: 'never', preserve: 'preserve' })
-					.setValue(this.plugin.settings.proseWrap || 'preserve')
+					.setValue(this.plugin.settings.proseWrap || DEFAULT_SETTINGS.proseWrap)
 					.onChange(async (value: PrettierSettings['proseWrap']) => {
-						this.plugin.settings.proseWrap = value;
+						const options: Array<PrettierSettings['proseWrap']> = ['always', 'never', 'preserve'];
+
+						this.plugin.settings.proseWrap = options.includes(value) ? value : DEFAULT_SETTINGS.proseWrap;
+
 						await this.plugin.saveSettings();
 					}),
 			);
