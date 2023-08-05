@@ -110,6 +110,7 @@ class FormattingSettingTab
 		this.bracketSpacing(containerEl);
 		this.bracketSameLine(containerEl);
 		this.arrowParens(containerEl);
+		this.htmlWhitespaceSensitivity(containerEl);
 	}
 
 	printWidth(containerEl: HTMLElement): Setting {
@@ -345,6 +346,30 @@ class FormattingSettingTab
 						const options: Array<PrettierSettings['proseWrap']> = ['always', 'never', 'preserve'];
 
 						this.plugin.settings.proseWrap = options.includes(value) ? value : DEFAULT_SETTINGS.proseWrap;
+
+						await this.plugin.saveSettings();
+					}),
+			);
+	}
+
+	htmlWhitespaceSensitivity(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('HTML Whitespace Sensitivity')
+			.setDesc('Specify the global whitespace sensitivity for HTML, Vue, Angular, and Handlebars.')
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOptions({ css: 'css', strict: 'strict', ignore: 'ignore' })
+					.setValue(this.plugin.settings.htmlWhitespaceSensitivity)
+					.onChange(async (value: PrettierSettings['htmlWhitespaceSensitivity']) => {
+						const options: Array<PrettierSettings['htmlWhitespaceSensitivity']> = [
+							'css',
+							'strict',
+							'ignore',
+						];
+
+						this.plugin.settings.htmlWhitespaceSensitivity = options.includes(value)
+							? value
+							: DEFAULT_SETTINGS.htmlWhitespaceSensitivity;
 
 						await this.plugin.saveSettings();
 					}),
