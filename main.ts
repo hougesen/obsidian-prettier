@@ -109,6 +109,9 @@ class FormattingSettingTab
 		this.endOfLine(containerEl);
 
 		this.semi(containerEl);
+
+		this.singleQuote(containerEl);
+		this.jsxSingleQuote(containerEl);
 	}
 
 	printWidth(containerEl: HTMLElement): Setting {
@@ -209,6 +212,30 @@ class FormattingSettingTab
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.semi === true).onChange(async (value) => {
 					this.plugin.settings.semi = value;
+					await this.plugin.saveSettings();
+				}),
+			);
+	}
+
+	singleQuote(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('Prefer single quote')
+			.setDesc('Use single quotes instead of double quotes.')
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.singleQuote === true).onChange(async (value) => {
+					this.plugin.settings.singleQuote = value;
+					await this.plugin.saveSettings();
+				}),
+			);
+	}
+
+	jsxSingleQuote(containerEl: HTMLElement): Setting {
+		return new Setting(containerEl)
+			.setName('JSX prefer single quote')
+			.setDesc('Use single quotes instead of double quotes in JSX.')
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.jsxSingleQuote === true).onChange(async (value) => {
+					this.plugin.settings.jsxSingleQuote = value;
 					await this.plugin.saveSettings();
 				}),
 			);
