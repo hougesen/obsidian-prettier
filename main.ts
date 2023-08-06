@@ -1,6 +1,18 @@
 import { App, Editor, MarkdownFileInfo, MarkdownView, Plugin, PluginSettingTab, Setting } from 'obsidian';
-import { RequiredOptions } from 'prettier';
+import type { RequiredOptions } from 'prettier';
+import * as prettierPluginAcorn from 'prettier/plugins/acorn';
+import * as prettierPluginAngular from 'prettier/plugins/angular';
+import * as prettierPluginBabel from 'prettier/plugins/babel';
+import * as prettierPluginEstree from 'prettier/plugins/estree';
+import * as prettierPluginFlow from 'prettier/plugins/flow';
+import * as prettierPluginGlimmer from 'prettier/plugins/glimmer';
+import * as prettierPluginGraphql from 'prettier/plugins/graphql';
+import * as prettierPluginHtml from 'prettier/plugins/html';
 import * as prettierPluginMarkdown from 'prettier/plugins/markdown';
+import * as prettierPluginMeriyah from 'prettier/plugins/meriyah';
+import * as prettierPluginPostcss from 'prettier/plugins/postcss';
+import * as prettierPluginTypeScript from 'prettier/plugins/typescript';
+import * as prettierPluginYaml from 'prettier/plugins/yaml';
 import * as prettier from 'prettier/standalone';
 
 type PrettierSettings = Pick<
@@ -45,7 +57,25 @@ const DEFAULT_SETTINGS: PrettierSettings = {
 };
 
 async function formatText(text: string, settings: PrettierSettings): Promise<string> {
-	return prettier.format(text, { ...settings, parser: 'markdown', plugins: [prettierPluginMarkdown] });
+	return prettier.format(text, {
+		...settings,
+		parser: 'markdown',
+		plugins: [
+			prettierPluginMarkdown,
+			prettierPluginAcorn,
+			prettierPluginAngular,
+			prettierPluginBabel,
+			prettierPluginEstree,
+			prettierPluginFlow,
+			prettierPluginGlimmer,
+			prettierPluginGraphql,
+			prettierPluginHtml,
+			prettierPluginMeriyah,
+			prettierPluginPostcss,
+			prettierPluginTypeScript,
+			prettierPluginYaml,
+		],
+	});
 }
 
 export default class ObsidianPrettier extends Plugin {
