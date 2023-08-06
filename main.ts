@@ -66,6 +66,7 @@ export default class ObsidianPrettier extends Plugin {
 		this.addCommand({
 			id: 'format-page',
 			name: 'Format Page',
+			hotkeys: [{ modifiers: ['Ctrl', 'Shift'], key: 'I' }],
 			editorCallback: async (editor: Editor, _ctx: MarkdownView | MarkdownFileInfo) =>
 				editor.setValue(await formatText(editor.getValue(), this.settings)),
 		});
