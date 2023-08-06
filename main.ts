@@ -114,6 +114,7 @@ class FormattingSettingTab
 		this.arrowParens(containerEl);
 		this.htmlWhitespaceSensitivity(containerEl);
 		this.singleAttributePerLine(containerEl);
+		this.vueIndentScriptAndStyle(containerEl);
 	}
 
 	printWidth(containerEl: HTMLElement): Setting {
