@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownFileInfo, MarkdownView, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Editor, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import type { RequiredOptions } from 'prettier';
 import * as prettierPluginAcorn from 'prettier/plugins/acorn';
 import * as prettierPluginAngular from 'prettier/plugins/angular';
@@ -78,27 +78,27 @@ async function formatText(text: string, settings: PrettierSettings): Promise<str
 	});
 }
 
+async function formatSelection(editor: Editor, settings: PrettierSettings) {
+	const content = editor.getSelection();
+	const formatted = await formatText(content, settings);
+	return editor.replaceSelection(formatted);
+}
+
+async function formatPage(editor: Editor, settings: PrettierSettings) {
+	const content = editor.getValue();
+	const formatted = await formatText(content, settings);
+	return editor.setValue(formatted);
+}
+
 export default class ObsidianPrettier extends Plugin {
 	settings: PrettierSettings;
 
 	async onload() {
-		console.info('load');
-
 		await this.loadSettings();
 
-		this.addCommand({
-			id: 'format-selection',
-			name: 'Format Selection',
-			editorCallback: async (editor: Editor) =>
-				editor.replaceSelection(await formatText(editor.getSelection(), this.settings)),
-		});
+		this.formatSelectionCommand();
 
-		this.addCommand({
-			id: 'format-page',
-			name: 'Format Page',
-			editorCallback: async (editor: Editor, _ctx: MarkdownView | MarkdownFileInfo) =>
-				editor.setValue(await formatText(editor.getValue(), this.settings)),
-		});
+		this.formatPageCommand();
 
 		this.addSettingTab(new FormattingSettingTab(this.app, this));
 	}
@@ -109,6 +109,22 @@ export default class ObsidianPrettier extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
+	}
+
+	formatSelectionCommand() {
+		return this.addCommand({
+			id: 'format-page',
+			name: 'Format Page',
+			editorCallback: async (editor) => formatPage(editor, this.settings),
+		});
+	}
+
+	formatPageCommand() {
+		return this.addCommand({
+			id: 'format-selection',
+			name: 'Format Selection',
+			editorCallback: async (editor) => formatSelection(editor, this.settings),
+		});
 	}
 }
 
