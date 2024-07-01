@@ -34,7 +34,7 @@
 		"eslint": "^8.57.0",
 		"obsidian": "latest",
 		"tslib": "2.6.3",
-		"typescript": "5.4.5"
+		"typescript": "5.5.3"
 	},
 	"dependencies": {
 		"prettier": "^3.3.1"
