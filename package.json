@@ -31,7 +31,7 @@
 		"@types/eslint": "~9.6.1",
 		"@types/eslint__js": "~8.42.3",
 		"builtin-modules": "4.0.0",
-		"esbuild": "0.23.0",
+		"esbuild": "0.23.1",
 		"eslint": "^9.9.1",
 		"globals": "^15.9.0",
 		"obsidian": "latest",
