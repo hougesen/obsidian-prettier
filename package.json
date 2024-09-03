@@ -9,8 +9,8 @@
 		"version": "node version-bump.mjs && git add manifest.json versions.json",
 		"format": "prettier --ignore-path .gitignore --cache --write .",
 		"format:check": "prettier --ignore-path .gitignore --cache --check .",
-		"lint": "eslint --ext \".js,.mjs,.ts\" --ignore-path .gitignore .",
-		"lint:fix": "eslint --ext \".js,.mjs,.ts\" --ignore-path .gitignore ."
+		"lint": "eslint .",
+		"lint:fix": "eslint --fix ."
 	},
 	"keywords": [
 		"prettier",
@@ -27,14 +27,17 @@
 	},
 	"homepage": "https://github.com/hougesen/obsidian-prettier#readme",
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "5.62.0",
-		"@typescript-eslint/parser": "5.62.0",
+		"@eslint/js": "^9.9.1",
+		"@types/eslint": "~9.6.1",
+		"@types/eslint__js": "~8.42.3",
 		"builtin-modules": "4.0.0",
 		"esbuild": "0.23.0",
-		"eslint": "^8.57.0",
+		"eslint": "^9.9.1",
+		"globals": "^15.9.0",
 		"obsidian": "latest",
 		"tslib": "2.6.3",
-		"typescript": "5.5.4"
+		"typescript": "5.5.4",
+		"typescript-eslint": "^8.4.0"
 	},
 	"dependencies": {
 		"prettier": "^3.3.3"
