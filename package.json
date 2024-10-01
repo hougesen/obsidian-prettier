@@ -33,7 +33,7 @@
 		"builtin-modules": "4.0.0",
 		"esbuild": "0.23.1",
 		"eslint": "^9.9.1",
-		"globals": "^15.9.0",
+		"globals": "^15.10.0",
 		"obsidian": "latest",
 		"tslib": "2.7.0",
 		"typescript": "5.5.4",
